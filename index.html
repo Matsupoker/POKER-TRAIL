@@ -4,613 +4,887 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>POKER TRAIL - ポーカーと旅をしよう</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
-        /* 基本スタイル */
-        * {
+        /* ── Reset & Base ── */
+        *, *::before, *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
+        :root {
+            --dark: #1a1a1a;
+            --dark-mid: #222;
+            --dark-soft: #2c2c2c;
+            --gold: #c8a84b;
+            --gold-bright: #d4af37;
+            --cream: #f5f4f1;
+            --cream-mid: #ece8e0;
+            --text: #2c2c2c;
+            --text-muted: #777;
+            --border: #e0ddd6;
+            --white: #fff;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            background-color: #f0f0f0;
-            color: #333;
-            line-height: 1.7;
-            font-family: 'Montserrat', 'Noto Sans JP', sans-serif;
+            background-color: var(--cream);
+            color: var(--text);
+            font-family: 'Noto Sans JP', 'Montserrat', sans-serif;
+            line-height: 1.8;
+            font-size: 1rem;
         }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+
+        a {
+            color: inherit;
+            text-decoration: none;
         }
-        
-        section {
-            padding: 70px 0;
-            border-bottom: 1px solid #ddd;
+
+        img {
+            display: block;
+            max-width: 100%;
         }
-        
-        h1, h2, h3 {
+
+        /* ── ナビ ── */
+        .global-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background-color: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(8px);
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 56px;
+            border-bottom: 1px solid rgba(200, 168, 75, 0.15);
+        }
+
+        .nav-brand {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
             font-weight: 700;
-            letter-spacing: 0.5px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
         }
-        
-        h2 {
-            font-size: 2.5rem;
-            text-align: center;
-            color: #222;
-            margin-bottom: 40px;
-            position: relative;
-            display: inline-block;
-            padding-bottom: 15px;
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 36px;
+            list-style: none;
         }
-        
-        h2::after {
-            content: '';
-            position: absolute;
-            width: 60px;
-            height: 3px;
-            background-color: #b8860b;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-        
-        .section-header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-        
-        h3 {
-            font-size: 1.4rem;
-            color: #222;
-            margin-bottom: 20px;
-        }
-        
-        p {
-            margin-bottom: 15px;
-            font-size: 1.05rem;
-            font-weight: 400;
-        }
-        
-        .highlight {
-            color: #9b7615;
+
+        .nav-links a {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.72rem;
             font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.65);
+            transition: color 0.2s;
         }
-        
-        /* ヘッダースタイル - スペース削減版 */
-        header {
-            background-color: #222;
-            color: white;
-            padding: 40px 0 30px; /* 上下のパディングをさらに削減 */
+
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+
+        /* ── ヒーロー ── */
+        .hero {
+            background-color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-align: center;
+            padding: 120px 24px 80px;
             position: relative;
             overflow: hidden;
         }
-        
-        .logo-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 15px; /* マージンを縮小 */
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 60%, rgba(200, 168, 75, 0.06) 0%, transparent 70%);
+            pointer-events: none;
         }
-        
-        .logo {
-            max-width: 250px; /* ロゴサイズ調整 */
-            height: auto;
-            display: block;
+
+        .hero-logo {
+            max-width: 220px;
+            margin: 0 auto 32px;
+            opacity: 0.95;
         }
-        
-        .catchphrase {
-            font-size: 2.2rem;
+
+        .hero-label {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.7rem;
             font-weight: 700;
-            color: #d4af37;
-            letter-spacing: 1px;
-            margin: 0;
-            position: relative;
-            z-index: 2;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 20px;
         }
-        
-        /* 理念セクション */
-        .philosophy-container {
+
+        .hero-catchphrase {
+            font-family: 'Noto Sans JP', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 700;
+            color: #f0ece0;
+            letter-spacing: 0.05em;
+            margin-bottom: 28px;
+            line-height: 1.3;
+        }
+
+        .hero-sub {
+            font-size: clamp(0.9rem, 2vw, 1.05rem);
+            color: rgba(255,255,255,0.45);
+            max-width: 480px;
+            line-height: 1.9;
+            margin: 0 auto 52px;
+        }
+
+        .hero-scroll {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(200, 168, 75, 0.5);
             display: flex;
             flex-direction: column;
             align-items: center;
-            text-align: center;
+            gap: 10px;
         }
-        
-        .philosophy {
-            font-size: 1.6rem;
-            font-weight: 600;
-            margin-bottom: 50px;
-            line-height: 1.8;
-            max-width: 800px;
-            color: #333;
-        }
-        
-        .philosophy-points {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 25px;
-        }
-        
-        .philosophy-point {
-            flex: 1;
-            min-width: 250px;
-            max-width: 350px;
-            padding: 35px 25px;
-            border-radius: 12px;
-            background-color: white;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
-            transition: transform 0.2s ease;
-            border: 1px solid #eaeaea;
-        }
-        
-        .philosophy-point:hover {
-            transform: translateY(-5px);
-        }
-        
-        .philosophy-point h3 {
-            margin-bottom: 15px;
-            text-align: center;
-        }
-        
-        .philosophy-point i {
-            font-size: 2.2rem;
-            color: #9b7615;
-            margin-bottom: 15px;
+
+        .hero-scroll::after {
+            content: '';
             display: block;
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, rgba(200,168,75,0.5), transparent);
         }
-        
-        /* 事業内容スタイル */
-        .services {
-            margin-top: 30px;
+
+        /* ── セクション共通 ── */
+        section {
+            padding: 96px 24px;
         }
-        
-        .service-card {
-            background-color: white;
-            border-radius: 12px;
-            padding: 35px 30px;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
-            transition: transform 0.2s ease;
-            border: 1px solid #eaeaea;
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
         }
-        
-        .service-card:hover {
-            transform: translateY(-5px);
+
+        .container-narrow {
+            max-width: 720px;
+            margin: 0 auto;
         }
-        
-        .service-title {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-            color: #222;
+
+        .section-label {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 12px;
         }
-        
-        .service-title i {
-            margin-right: 15px;
-            color: #9b7615;
-            font-size: 1.8rem;
+
+        .section-title {
+            font-family: 'Noto Sans JP', sans-serif;
+            font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 16px;
+            line-height: 1.35;
         }
-        
-        /* 自己紹介スタイル */
-        .profile-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
+
+        .section-lead {
+            font-size: 1rem;
+            color: var(--text-muted);
+            line-height: 1.9;
+            margin-bottom: 56px;
         }
-        
-        .profile-image {
-            text-align: center;
-            margin-bottom: 35px;
+
+        .section-divider {
+            border: none;
+            border-top: 1px solid var(--border);
         }
-        
-        .profile-image img {
-            width: 200px;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 4px solid #9b7615;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            margin-bottom: 15px;
-            transition: transform 0.2s ease;
+
+        /* ── ブランドステートメント ── */
+        #about {
+            background-color: var(--dark);
+            padding: 96px 24px;
         }
-        
-        .profile-image img:hover {
-            transform: scale(1.05);
+
+        #about .section-label {
+            color: rgba(200, 168, 75, 0.7);
         }
-        
-        .profile-image h3 {
-            font-size: 1.7rem;
-            color: #222;
-            margin-bottom: 10px;
+
+        .brand-statement {
+            font-size: clamp(1.1rem, 2.5vw, 1.45rem);
+            color: rgba(240, 236, 224, 0.88);
+            line-height: 2.0;
+            max-width: 680px;
+            font-weight: 400;
         }
-        
-        .profile-info {
+
+        .brand-statement strong {
+            color: #f0ece0;
+            font-weight: 700;
+        }
+
+        .brand-values {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
             gap: 12px;
-            margin-bottom: 35px;
+            margin-top: 40px;
         }
-        
-        .profile-info-item {
-            background-color: #e8e8e8;
-            padding: 8px 18px;
-            border-radius: 50px;
-            font-size: 0.95rem;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03);
-            transition: transform 0.2s ease;
-            border: 1px solid #ddd;
+
+        .brand-value-tag {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--gold);
+            border: 1px solid rgba(200, 168, 75, 0.4);
+            padding: 6px 16px;
+            border-radius: 2px;
         }
-        
-        .profile-info-item:hover {
-            transform: translateY(-3px);
+
+        /* ── 旅のログ ── */
+        #trail-log {
+            background-color: var(--cream);
         }
-        
-        .profile-section {
-            background-color: white;
-            border-radius: 12px;
-            padding: 35px 30px;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
-            text-align: left;
-            max-width: 800px;
-            transition: transform 0.2s ease;
-            border: 1px solid #eaeaea;
+
+        .articles-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0;
         }
-        
-        .profile-section:hover {
-            transform: translateY(-5px);
+
+        .article-card {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background-color: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
         }
-        
-        .profile-section h3 {
-            text-align: left;
-            margin-bottom: 15px;
-            color: #222;
+
+        .article-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.1);
+        }
+
+        .article-card-image {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .article-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .article-card:hover .article-card-image img {
+            transform: scale(1.04);
+        }
+
+        .article-card-body {
+            padding: 48px 44px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .card-meta {
             display: flex;
             align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .card-tag {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gold);
+            border: 1px solid rgba(200,168,75,0.4);
+            padding: 3px 10px;
+            border-radius: 2px;
+        }
+
+        .card-date {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+
+        .article-card-body h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--dark);
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .article-card-body p {
+            font-size: 0.92rem;
+            color: #666;
+            line-height: 1.85;
+            margin-bottom: 28px;
+        }
+
+        .read-more {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gold);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: gap 0.2s;
+        }
+
+        .read-more:hover {
+            gap: 14px;
+        }
+
+        /* ── サービス ── */
+        #services {
+            background-color: var(--cream-mid);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .service-item {
+            padding: 0;
+        }
+
+        .service-number {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: var(--border);
+            line-height: 1;
+            margin-bottom: 16px;
+        }
+
+        .service-item h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .service-item p {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            line-height: 1.85;
+        }
+
+        /* ── 理念 ── */
+        #philosophy {
+            background-color: var(--white);
+        }
+
+        .philosophy-quote {
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            font-weight: 700;
+            color: var(--dark);
+            line-height: 1.75;
+            border-left: 4px solid var(--gold);
+            padding: 4px 0 4px 28px;
+            margin-bottom: 48px;
+            max-width: 640px;
+        }
+
+        .philosophy-points {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .philosophy-point {
+            padding: 28px 0;
+            border-top: 2px solid var(--gold);
+        }
+
+        .philosophy-point i {
+            color: var(--gold);
             font-size: 1.4rem;
+            margin-bottom: 16px;
         }
-        
-        .profile-section h3 i {
-            margin-right: 12px;
-            color: #9b7615;
-            font-size: 1.5rem;
-        }
-        
-        .profile-section ul {
-            margin-left: 15px;
-            margin-bottom: 15px;
-            list-style-type: none;
-        }
-        
-        .profile-section li {
+
+        .philosophy-point h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--dark);
             margin-bottom: 10px;
-            position: relative;
-            padding-left: 5px;
+            line-height: 1.5;
         }
-        
-        /* お問い合わせスタイル */
-        .contact {
+
+        .philosophy-point p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.85;
+        }
+
+        /* ── プロフィール ── */
+        #profile {
+            background-color: var(--cream);
+        }
+
+        .profile-layout {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            gap: 64px;
+            align-items: start;
+        }
+
+        .profile-photo {
+            position: sticky;
+            top: 80px;
+        }
+
+        .profile-photo img {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            border-radius: 4px;
+            filter: grayscale(10%);
+        }
+
+        .profile-photo-caption {
+            margin-top: 16px;
             text-align: center;
         }
-        
-        .contact-button {
-            display: inline-block;
-            background-color: #9b7615;
-            color: white;
-            padding: 14px 32px;
-            border-radius: 50px;
-            text-decoration: none;
+
+        .profile-photo-name {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 4px;
+        }
+
+        .profile-photo-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.7rem;
             font-weight: 600;
-            font-size: 1.1rem;
-            margin-top: 25px;
-            transition: background-color 0.2s ease, transform 0.2s ease;
-            box-shadow: 0 8px 15px rgba(155, 118, 21, 0.2);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--gold);
         }
-        
-        .contact-button:hover {
-            transform: translateY(-3px);
-            background-color: #8a6913;
+
+        .profile-content h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin: 32px 0 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
         }
-        
+
+        .profile-content h3:first-child {
+            margin-top: 0;
+        }
+
+        .profile-content p {
+            font-size: 0.95rem;
+            color: #444;
+            line-height: 1.9;
+            margin-bottom: 14px;
+        }
+
+        .profile-content ul {
+            margin: 10px 0 14px 4px;
+            list-style: none;
+        }
+
+        .profile-content li {
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.8;
+            padding-left: 16px;
+            position: relative;
+            margin-bottom: 6px;
+        }
+
+        .profile-content li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        .profile-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 16px 0 24px;
+        }
+
+        .profile-tag {
+            font-size: 0.8rem;
+            color: #555;
+            background-color: var(--cream-mid);
+            border: 1px solid var(--border);
+            padding: 5px 14px;
+            border-radius: 2px;
+        }
+
+        /* ── コンタクト ── */
+        #contact {
+            background-color: var(--dark);
+            text-align: center;
+        }
+
+        #contact .section-label {
+            color: rgba(200, 168, 75, 0.7);
+        }
+
+        #contact .section-title {
+            color: #f0ece0;
+        }
+
+        #contact .section-lead {
+            color: rgba(255,255,255,0.4);
+        }
+
         .contact-options {
             display: flex;
             justify-content: center;
-            gap: 25px;
-            margin-top: 40px;
+            gap: 24px;
             flex-wrap: wrap;
         }
-        
-        .contact-option {
-            flex: 1;
-            min-width: 250px;
-            max-width: 350px;
-            background-color: white;
-            padding: 35px 25px;
-            border-radius: 12px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
-            transition: transform 0.2s ease;
-            border: 1px solid #eaeaea;
-        }
-        
-        .contact-option:hover {
-            transform: translateY(-5px);
-        }
-        
-        .contact-option h3 {
-            display: flex;
+
+        .contact-btn {
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
-            margin-bottom: 15px;
+            gap: 10px;
+            padding: 14px 32px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border-radius: 2px;
+            transition: all 0.2s;
         }
-        
-        .contact-option h3 i {
-            margin-right: 10px;
-            font-size: 1.3rem;
-            color: #9b7615;
+
+        .contact-btn-primary {
+            background-color: var(--gold);
+            color: var(--dark);
         }
-        
-        /* フッタースタイル */
+
+        .contact-btn-primary:hover {
+            background-color: var(--gold-bright);
+        }
+
+        .contact-btn-secondary {
+            border: 1px solid rgba(200, 168, 75, 0.4);
+            color: var(--gold);
+        }
+
+        .contact-btn-secondary:hover {
+            background-color: rgba(200, 168, 75, 0.08);
+            border-color: var(--gold);
+        }
+
+        /* ── フッター ── */
         footer {
-            background-color: #222;
-            color: white;
-            padding: 30px 0;
+            background-color: #111;
+            padding: 32px 24px;
             text-align: center;
-            font-size: 0.95rem;
         }
-        
-        /* レスポンシブ対応 - 強化版 */
-        @media (max-width: 768px) {
-            section {
-                padding: 50px 0;
+
+        footer p {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            color: rgba(255,255,255,0.25);
+            text-transform: uppercase;
+        }
+
+        /* ── レスポンシブ ── */
+        @media (max-width: 900px) {
+            .article-card {
+                grid-template-columns: 1fr;
             }
-            
-            header {
-                padding: 30px 0 25px; /* モバイル向けにさらに調整 */
+
+            .article-card-image {
+                height: 260px;
             }
-            
-            .logo {
+
+            .services-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .philosophy-points {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-photo {
+                position: static;
                 max-width: 200px;
             }
-            
-            .catchphrase {
-                font-size: 1.8rem;
-            }
-            
-            h2 {
-                font-size: 2rem;
-            }
-            
-            .philosophy {
-                font-size: 1.3rem;
-                padding: 0 15px;
-            }
-            
-            .service-card, .profile-section, .contact-option {
-                padding: 25px 20px;
-            }
-            
-            .profile-image img {
-                width: 180px;
-                height: 180px;
-            }
         }
-        
-        @media (max-width: 480px) {
-            .logo {
-                max-width: 180px;
+
+        @media (max-width: 640px) {
+            .global-nav {
+                padding: 0 20px;
             }
-            
-            .catchphrase {
-                font-size: 1.5rem;
+
+            .nav-links {
+                display: none;
             }
-            
-            h2 {
-                font-size: 1.8rem;
+
+            section {
+                padding: 72px 20px;
             }
-            
-            .profile-info {
-                flex-direction: column;
-                gap: 8px;
+
+            .article-card-body {
+                padding: 32px 28px;
             }
-            
-            .profile-info-item {
-                width: 100%;
-            }
-            
-            .service-title {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .service-title i {
-                margin-right: 0;
-                margin-bottom: 10px;
+
+            .hero {
+                padding: 100px 20px 72px;
             }
         }
     </style>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- ヘッダー - スペース削減版 -->
-    <header>
-        <div class="container">
-            <div class="logo-container">
-                <img src="Poker Trail ロゴ.png" alt="POKER TRAIL Logo" class="logo">
-            </div>
-            <h1 class="catchphrase">ポーカーと旅をしよう</h1>
+
+<!-- ── ナビゲーション ── -->
+<nav class="global-nav">
+    <span class="nav-brand">Poker Trail</span>
+    <ul class="nav-links">
+        <li><a href="#trail-log">旅のログ</a></li>
+        <li><a href="#services">活動</a></li>
+        <li><a href="#profile">プロフィール</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+</nav>
+
+<!-- ── ヒーロー ── -->
+<section class="hero">
+    <img src="Poker Trail ロゴ.png" alt="POKER TRAIL" class="hero-logo">
+    <div class="hero-label">Personal Brand by 松島力也</div>
+    <h1 class="hero-catchphrase">ポーカーと旅をしよう</h1>
+    <p class="hero-sub">
+        ポーカーは、ゲームであり、旅でもある。<br>
+        人と場所をつなぐ体験の記録を、ここに積み上げていく。
+    </p>
+    <div class="hero-scroll">Scroll</div>
+</section>
+
+<!-- ── ブランドステートメント ── -->
+<section id="about">
+    <div class="container-narrow">
+        <div class="section-label">About Poker Trail</div>
+        <p class="brand-statement">
+            Poker Trail は、ポーカーを単なる勝負としてではなく、<strong>人と場所をつなぐ旅</strong>として捉えるプロジェクトです。<br><br>
+            山口を起点に、ポーカーシーンの記録と育成を続けながら、プレイヤーと店舗の架け橋となること。そして、<strong>ポーカーが長く愛される環境を共に育むこと</strong>を目的としています。<br><br>
+            旅ブログは、その世界観を具体的に見せる記録のひとつです。
+        </p>
+        <div class="brand-values">
+            <span class="brand-value-tag">Travel</span>
+            <span class="brand-value-tag">Poker</span>
+            <span class="brand-value-tag">Yamaguchi</span>
+            <span class="brand-value-tag">Community</span>
+            <span class="brand-value-tag">Integrity</span>
         </div>
-    </header>
-    
-    <!-- 事業内容 -->
-    <section id="services">
-        <div class="container">
-            <div class="section-header">
-                <h2>プロジェクト内容</h2>
-                <h3>POKER TRAIL が提供する3つのサービス</h3>
-            </div>
-            
-            <div class="services">
-                <div class="service-card">
-                    <div class="service-title">
-                        <i class="fas fa-network-wired"></i>
-                        <h3>1. Poker Hub Yamaguchi の運営</h3>
-                    </div>
-                    <p>ポーカールーム経営者向けの情報プラットフォームを運営し、経営ノウハウや業界動向の共有を促進します。最新の法規制情報やマーケティング戦略など、経営に必要な情報を提供しています。</p>
+    </div>
+</section>
+
+<!-- ── 旅のログ ── -->
+<section id="trail-log">
+    <div class="container">
+        <div class="section-label">Trail Log</div>
+        <h2 class="section-title">旅のログ</h2>
+        <p class="section-lead">ポーカーと旅の記録。体験したこと、感じたことを、ありのままに残す。</p>
+
+        <div class="articles-grid">
+            <a href="articles/blog/travel/2026_03_16_Simonoseki/index.html" class="article-card">
+                <div class="article-card-image">
+                    <img src="articles/blog/travel/2026_03_16_Simonoseki/assets/行きの山口線.jpg" alt="山口線">
                 </div>
-                
-                <div class="service-card">
-                    <div class="service-title">
-                        <i class="fas fa-calendar-alt"></i>
-                        <h3>2. ポーカーイベントのプロデュース</h3>
+                <div class="article-card-body">
+                    <div class="card-meta">
+                        <span class="card-tag">旅のログ</span>
+                        <span class="card-date">2026.03.16</span>
                     </div>
-                    <p>魅力的なポーカートーナメントや特別イベントの企画・運営をサポートします。プレイヤー目線とホスト目線の両方を活かした、満足度の高いイベント作りを実現します。</p>
+                    <h3>山口発・下関昼ハシゴ酒。<br>そして新山口サウナと焼き鳥まで。</h3>
+                    <p>設計して、壊して、また組み立てる。下関の昼酒文化を観光と生活圏の両面から踏み、その後に新山口で整えて、焼き鳥で締めた一日の記録。</p>
+                    <span class="read-more">Read →</span>
                 </div>
-                
-                <div class="service-card">
-                    <div class="service-title">
-                        <i class="fas fa-store"></i>
-                        <h3>3. ポーカールーム経営サポート</h3>
-                    </div>
-                    <p>新規開業や既存店舗の運営改善に関するコンサルティングを提供します。集客戦略、コミュニティ形成、リスク管理など、経営者が直面する様々な課題解決をサポートします。</p>
-                </div>
-            </div>
+            </a>
         </div>
-    </section>
-    
-    <!-- 理念 -->
-    <section id="philosophy">
-        <div class="container">
-            <div class="section-header">
-                <h2>POKER TRAIL の理念</h2>
+    </div>
+</section>
+
+<!-- ── 活動内容 ── -->
+<section id="services">
+    <div class="container">
+        <div class="section-label">What We Do</div>
+        <h2 class="section-title">活動内容</h2>
+        <p class="section-lead">ポーカーシーンを支える3つの取り組み。</p>
+
+        <div class="services-grid">
+            <div class="service-item">
+                <div class="service-number">01</div>
+                <h3>Poker Hub Yamaguchi の運営</h3>
+                <p>ポーカールーム経営者向けの情報プラットフォーム。経営ノウハウ、法規制情報、マーケティング戦略など、経営に必要な情報を集約・共有します。</p>
             </div>
-            <div class="philosophy-container">
-                <p class="philosophy">「ポーカーと共に新しい旅を創造し、長く愛される環境を育む」</p>
-                
-                <div class="philosophy-points">
-                    <div class="philosophy-point">
-                        <i class="fas fa-compass"></i>
-                        <h3>ポーカーの未来を支え、共に創る</h3>
-                        <p>単にプレイするだけでなく、ポーカーシーンの発展と持続可能性に貢献します。</p>
-                    </div>
-                    
-                    <div class="philosophy-point">
-                        <i class="fas fa-handshake"></i>
-                        <h3>店舗とプレイヤーの架け橋となる</h3>
-                        <p>経営者とプレイヤーの相互理解を促進し、より良いポーカー環境の構築をサポートします。</p>
-                    </div>
-                    
-                    <div class="philosophy-point">
-                        <i class="fas fa-seedling"></i>
-                        <h3>健全な競争と持続可能な発展</h3>
-                        <p>公正なプレイと経営を促進し、長期的に繁栄するポーカーコミュニティを育みます。</p>
-                    </div>
-                </div>
+            <div class="service-item">
+                <div class="service-number">02</div>
+                <h3>ポーカーイベントのプロデュース</h3>
+                <p>プレイヤー目線とホスト目線の両方を活かした、トーナメントや特別イベントの企画・運営サポート。満足度の高いイベント作りを実現します。</p>
             </div>
-        </div>
-    </section>
-    
-    <!-- 自己紹介 -->
-    <section id="profile">
-        <div class="container">
-            <div class="section-header">
-                <h2>自己紹介</h2>
-            </div>
-            
-            <div class="profile-container">
-                <div class="profile-image">
-                    <img src="自己紹介画像.jpg" alt="松島力也（まつ）">
-                    <h3>松島力也 / まつ（ポーカーネーム）</h3>
-                </div>
-                
-                <div class="profile-info">
-                    <div class="profile-info-item">
-                        <i class="fas fa-calendar"></i> 生年月日：1974年12月18日
-                    </div>
-                    <div class="profile-info-item">
-                        <i class="fas fa-cards"></i> ポーカー歴：3年目（2025年時点）
-                    </div>
-                    <div class="profile-info-item">
-                        <i class="fas fa-hospital"></i> 本業：理学療法士（PT）
-                    </div>
-                    <div class="profile-info-item">
-                        <i class="fas fa-briefcase"></i> 個人プロジェクト：「POKER TRAIL」主宰
-                    </div>
-                </div>
-                
-                <div class="profile-section">
-                    <h3><i class="fas fa-user"></i> ポーカーとの出会い</h3>
-                    <p>ポーカーに興味を持ったのは数年前。戦略性と心理戦の奥深さに魅了され、プレイヤーとしての経験を積んできた。スタイルは<span class="highlight">タイトパッシブ</span>。慎重に情報を集め、的確な場面でアクションを起こすのが持ち味。</p>
-                </div>
-                
-                <div class="profile-section">
-                    <h3><i class="fas fa-route"></i> POKER TRAIL 設立の背景</h3>
-                    <p>ポーカーができる場所があるのは、<span class="highlight">誰かがその環境を支えているから</span>。ただプレイするだけではなく、自分自身も<span class="highlight">ポーカーシーンの一部を支える側になりたい</span>と考えるようになった。</p>
-                    <p>「POKER TRAIL」は、<span class="highlight">ポーカールームの経営者とプレイヤーの架け橋となり、ポーカーが長く愛される環境を育むこと</span>を目的に立ち上げた。また、<span class="highlight">「自分の大事な遊び場は自分で守る」</span>という想いが根底にある。</p>
-                </div>
-                
-                <div class="profile-section">
-                    <h3><i class="fas fa-comments"></i> 山口ポーカー交流チャットの運営</h3>
-                    <p>2023年、XPT広島開催時に<span class="highlight">情報交換を目的として「XPT山口勢」のタイトルでオープンチャットを開設</span>したのが始まり。その後、<span class="highlight">「山口ポーカー交流チャット」に名称を変更</span>し、現在も運営を継続。</p>
-                    <ul>
-                        <li>📌 <strong>毎日12時に、山口県全8店舗のトーナメント情報を配信</strong></li>
-                        <li>📌 <strong>名称変更以来、1日も配信を休んだことはない</strong></li>
-                        <li>📌 <strong>自称「ポーカー山口勢」というワードの生みの親</strong></li>
-                    </ul>
-                    <p><strong>ポーカーの情報をスムーズに共有し、プレイヤーとポーカールームの架け橋となることを目的としている。</strong></p>
-                </div>
-                
-                <div class="profile-section">
-                    <h3><i class="fas fa-rocket"></i> これからの展望</h3>
-                    <ul>
-                        <li><strong>Poker Hub Yamaguchiの運営</strong>（ポーカールーム経営者向けの情報プラットフォーム）</li>
-                        <li><strong>ポーカーイベントのプロデュース</strong></li>
-                        <li><strong>プレイヤーとして成長し、大型大会での優勝を目指す</strong></li>
-                    </ul>
-                </div>
+            <div class="service-item">
+                <div class="service-number">03</div>
+                <h3>ポーカールーム経営サポート</h3>
+                <p>新規開業や既存店舗の改善コンサルティング。集客戦略、コミュニティ形成、リスク管理など、経営者が直面する課題解決をサポートします。</p>
             </div>
         </div>
-    </section>
-    
-    <!-- お問い合わせ -->
-    <section id="contact">
-        <div class="container">
-            <div class="section-header">
-                <h2>お問い合わせ</h2>
+    </div>
+</section>
+
+<!-- ── 理念 ── -->
+<section id="philosophy">
+    <div class="container">
+        <div class="section-label">Philosophy</div>
+        <h2 class="section-title">理念</h2>
+
+        <div class="philosophy-quote">
+            「ポーカーと共に新しい旅を創造し、<br>長く愛される環境を育む」
+        </div>
+
+        <div class="philosophy-points">
+            <div class="philosophy-point">
+                <i class="fas fa-compass"></i>
+                <h4>ポーカーの未来を支え、共に創る</h4>
+                <p>単にプレイするだけでなく、ポーカーシーンの発展と持続可能性に貢献します。</p>
             </div>
-            
-            <div class="contact">
-                <p>POKER TRAILに関するお問い合わせや、ポーカールーム経営のご相談は下記よりお気軽にどうぞ。</p>
-                <a href="#" class="contact-button">お問い合わせはこちら</a>
-                
-                <div class="contact-options">
-                    <div class="contact-option">
-                        <h3><i class="fas fa-envelope"></i> 通常のお問い合わせ</h3>
-                        <p>Googleフォームからお問い合わせいただけます。</p>
-                        <a href="#" class="contact-button">フォームを開く</a>
-                    </div>
-                    
-                    <div class="contact-option">
-                        <h3><i class="fab fa-twitter"></i> 急ぎの場合</h3>
-                        <p>X（旧Twitter）のDMからご連絡ください。</p>
-                        <a href="https://twitter.com/matsupoker" target="_blank" class="contact-button">@matsupoker</a>
-                    </div>
+            <div class="philosophy-point">
+                <i class="fas fa-handshake"></i>
+                <h4>店舗とプレイヤーの架け橋となる</h4>
+                <p>経営者とプレイヤーの相互理解を促進し、より良いポーカー環境の構築をサポートします。</p>
+            </div>
+            <div class="philosophy-point">
+                <i class="fas fa-seedling"></i>
+                <h4>健全な競争と持続可能な発展</h4>
+                <p>公正なプレイと経営を促進し、長期的に繁栄するポーカーコミュニティを育みます。</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── プロフィール ── -->
+<section id="profile">
+    <div class="container">
+        <div class="section-label">Profile</div>
+        <h2 class="section-title">自己紹介</h2>
+
+        <div class="profile-layout">
+            <div class="profile-photo">
+                <img src="自己紹介画像.jpg" alt="松島力也">
+                <div class="profile-photo-caption">
+                    <div class="profile-photo-name">松島力也 / まつ</div>
+                    <div class="profile-photo-title">Poker Trail</div>
                 </div>
             </div>
+
+            <div class="profile-content">
+                <div class="profile-tags">
+                    <span class="profile-tag">生年月日：1974年12月18日</span>
+                    <span class="profile-tag">ポーカー歴：3年目（2025年時点）</span>
+                    <span class="profile-tag">本業：理学療法士（PT）</span>
+                    <span class="profile-tag">スタイル：タイトパッシブ</span>
+                </div>
+
+                <h3>ポーカーとの出会い</h3>
+                <p>ポーカーに興味を持ったのは数年前。戦略性と心理戦の奥深さに魅了され、プレイヤーとしての経験を積んできた。慎重に情報を集め、的確な場面でアクションを起こす「タイトパッシブ」が持ち味。</p>
+
+                <h3>POKER TRAIL 設立の背景</h3>
+                <p>ポーカーができる場所があるのは、誰かがその環境を支えているから。ただプレイするだけではなく、自分自身もポーカーシーンの一部を支える側になりたいと考えるようになった。</p>
+                <p>「自分の大事な遊び場は自分で守る」という想いが根底にあり、ポーカールームの経営者とプレイヤーの架け橋となることを目的に POKER TRAIL を立ち上げた。</p>
+
+                <h3>山口ポーカー交流チャットの運営</h3>
+                <p>2023年、XPT広島開催時に情報交換を目的としてオープンチャットを開設したのが始まり。その後「山口ポーカー交流チャット」に名称を変更し、現在も継続中。</p>
+                <ul>
+                    <li>毎日12時に、山口県全8店舗のトーナメント情報を配信</li>
+                    <li>名称変更以来、1日も配信を休んだことはない</li>
+                    <li>「ポーカー山口勢」というワードの生みの親</li>
+                </ul>
+
+                <h3>これからの展望</h3>
+                <ul>
+                    <li>Poker Hub Yamaguchiの運営と拡充</li>
+                    <li>ポーカーイベントのプロデュース</li>
+                    <li>プレイヤーとして成長し、大型大会での優勝を目指す</li>
+                </ul>
+            </div>
         </div>
-    </section>
-    
-    <!-- フッター -->
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 POKER TRAIL. All Rights Reserved.</p>
+    </div>
+</section>
+
+<!-- ── コンタクト ── -->
+<section id="contact">
+    <div class="container" style="text-align:center;">
+        <div class="section-label">Contact</div>
+        <h2 class="section-title">お問い合わせ</h2>
+        <p class="section-lead">
+            POKER TRAIL に関するお問い合わせや、<br>ポーカールーム経営のご相談はお気軽にどうぞ。
+        </p>
+        <div class="contact-options">
+            <a href="#" class="contact-btn contact-btn-primary">
+                <i class="fas fa-envelope"></i> Googleフォーム
+            </a>
+            <a href="https://twitter.com/matsupoker" target="_blank" rel="noopener" class="contact-btn contact-btn-secondary">
+                <i class="fab fa-twitter"></i> @matsupoker
+            </a>
         </div>
-    </footer>
+    </div>
+</section>
+
+<!-- ── フッター ── -->
+<footer>
+    <p>&copy; 2026 POKER TRAIL — Matsushima Rikiya. All Rights Reserved.</p>
+</footer>
+
 </body>
 </html>
